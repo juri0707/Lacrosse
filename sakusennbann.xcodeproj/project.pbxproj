@@ -14,6 +14,9 @@
 		CE0E63BA1E6584E1004E1738 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0E63B81E6584E1004E1738 /* LaunchScreen.storyboard */; };
 		CE0E63C51E6584E1004E1738 /* sakusennbannTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E63C41E6584E1004E1738 /* sakusennbannTests.swift */; };
 		CE0E63D01E6584E1004E1738 /* sakusennbannUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0E63CF1E6584E1004E1738 /* sakusennbannUITests.swift */; };
+		CE0E63DE1E658540004E1738 /* フィール１.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE0E63DD1E658540004E1738 /* フィール１.jpg */; };
+		CEA945451E6585C200BE50D7 /* 透明丸.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA945441E6585C200BE50D7 /* 透明丸.png */; };
+		CEA945471E6585CB00BE50D7 /* 透明丸 2.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA945461E6585CB00BE50D7 /* 透明丸 2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,9 @@
 		CE0E63CB1E6584E1004E1738 /* sakusennbannUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sakusennbannUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0E63CF1E6584E1004E1738 /* sakusennbannUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sakusennbannUITests.swift; sourceTree = "<group>"; };
 		CE0E63D11E6584E1004E1738 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE0E63DD1E658540004E1738 /* フィール１.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "フィール１.jpg"; sourceTree = "<group>"; };
+		CEA945441E6585C200BE50D7 /* 透明丸.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "透明丸.png"; sourceTree = "<group>"; };
+		CEA945461E6585CB00BE50D7 /* 透明丸 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "透明丸 2.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +106,9 @@
 				CE0E63AF1E6584E1004E1738 /* AppDelegate.swift */,
 				CE0E63B11E6584E1004E1738 /* ViewController.swift */,
 				CE0E63B31E6584E1004E1738 /* Main.storyboard */,
+				CEA945461E6585CB00BE50D7 /* 透明丸 2.png */,
+				CEA945441E6585C200BE50D7 /* 透明丸.png */,
+				CE0E63DD1E658540004E1738 /* フィール１.jpg */,
 				CE0E63B61E6584E1004E1738 /* Assets.xcassets */,
 				CE0E63B81E6584E1004E1738 /* LaunchScreen.storyboard */,
 				CE0E63BB1E6584E1004E1738 /* Info.plist */,
@@ -232,9 +241,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0E63DE1E658540004E1738 /* フィール１.jpg in Resources */,
 				CE0E63BA1E6584E1004E1738 /* LaunchScreen.storyboard in Resources */,
 				CE0E63B71E6584E1004E1738 /* Assets.xcassets in Resources */,
 				CE0E63B51E6584E1004E1738 /* Main.storyboard in Resources */,
+				CEA945451E6585C200BE50D7 /* 透明丸.png in Resources */,
+				CEA945471E6585CB00BE50D7 /* 透明丸 2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,6 +515,7 @@
 				CE0E63D61E6584E1004E1738 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CE0E63D71E6584E1004E1738 /* Build configuration list for PBXNativeTarget "sakusennbannTests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +524,7 @@
 				CE0E63D91E6584E1004E1738 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CE0E63DA1E6584E1004E1738 /* Build configuration list for PBXNativeTarget "sakusennbannUITests" */ = {
 			isa = XCConfigurationList;
@@ -519,6 +533,7 @@
 				CE0E63DC1E6584E1004E1738 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
