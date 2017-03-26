@@ -103,7 +103,7 @@ class ViewController: UIViewController {
         // ロングプレスを定義
         //let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(LongPressCodeViewController.longPressView(_:)))  //Swift2.2以前
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressView(sender:)))  //Swift3
-        longPressGesture.minimumPressDuration = 3  //3秒間以上押された場合にロングプレスとする
+        longPressGesture.minimumPressDuration = 1  //1秒間以上押された場合にロングプレスとする
         longPressGesture.allowableMovement = 30  //ロングプレスを判定する指が動いていい範囲、単位はpx
         
         touchView.addGestureRecognizer(longPressGesture)
@@ -190,8 +190,54 @@ class ViewController: UIViewController {
     func longPressView(sender: UILongPressGestureRecognizer) {
         print("Long Press")
         //self.touchView.removeFromSuperview()
-        sender.view?.removeFromSuperview()
-    }
+        touchView = sender.view as! ViewController.TouchView
+        //アラートを出す
+        let alert:UIAlertController = UIAlertController(title:"削除",message:"選択した丸を削除します。", preferredStyle: .alert)
+        
+        //OKボタン
+        alert.addAction(
+            UIAlertAction(
+                title:"OK",
+                style: UIAlertActionStyle.default,
+                handler: {action in
+                    //ボタンが押された時の動作
+                    NSLog("OKボタンが押されました")
+                    sender.view?.removeFromSuperview()
+                    
+                    if self.touchView.color == "red"{
+                    self.redtag = self.redtag - 1
+                    print("削除したので赤のタグ番号は",self.redtag)
+                    
+                    
+                    if self.redtag == 7{
+                        self.redbutton.isEnabled = false
+                        
+                    }else{
+                        
+                 self.redbutton.isEnabled = true
+                        }
+                    
+                    
+                    }else{
+                        self.bluetag = self.bluetag - 1
+                        print("削除したので青のタグ番号は",self.bluetag)
+                    if self.bluetag == 7{
+                        self.bluebutton.isEnabled = false
+                     }else{
+                        self.bluebutton.isEnabled = true
+                    }
+                    }
+                        }
+                        )
+                        )
+        present(alert, animated: true, completion: nil)
+        
+        
+        
+
+        
+        
+    
     
 
 
@@ -207,9 +253,10 @@ class ViewController: UIViewController {
     }
     
 
-    override func didReceiveMemoryWarning() {
+    func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+}
 }
