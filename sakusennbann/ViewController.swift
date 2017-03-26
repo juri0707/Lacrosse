@@ -57,9 +57,6 @@ class ViewController: UIViewController {
     }
     
     
-    @IBAction func memory () {
-        
-    }
     
     
     func appearInView(_ redOrBlue: Int){
@@ -111,7 +108,7 @@ class ViewController: UIViewController {
         
         func animation(){
             UIView.animate(withDuration: 0.05,
-                           //アニメーション中の処理
+        //アニメーション中の処理
                 animations: { () -> Void in
                     self.imageView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
             }){ (Bool) -> Void in
@@ -207,17 +204,11 @@ class ViewController: UIViewController {
                     if self.touchView.color == "red"{
                     self.redtag = self.redtag - 1
                     print("削除したので赤のタグ番号は",self.redtag)
-                    
-                    
                     if self.redtag == 7{
                         self.redbutton.isEnabled = false
-                        
                     }else{
-                        
                  self.redbutton.isEnabled = true
                         }
-                    
-                    
                     }else{
                         self.bluetag = self.bluetag - 1
                         print("削除したので青のタグ番号は",self.bluetag)
@@ -234,9 +225,11 @@ class ViewController: UIViewController {
         
         
         
-
         
-        
+        func testSlider(sender: UISlider) {
+    
+    
+        }
     
     
 
@@ -251,6 +244,10 @@ class ViewController: UIViewController {
     func store() {
         
     }
+    func memory () {
+            
+        }
+
     
 
     func didReceiveMemoryWarning() {
