@@ -28,7 +28,9 @@ class ViewController: UIViewController {
     var motonoitiX = [CGFloat]()
     var motonoitiY = [CGFloat]()
     let alert2:UIAlertController = UIAlertController(title:"記憶をし直します",message:"再度記憶ボタンを押して始めてください", preferredStyle: .alert)
-    //選択しているスタンプの番号
+    var testSlider: UISlider!
+    //タップジェスチャーを定義
+    let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self,action: #selector(ViewController.tap(_:)))
     var imageIndex: Int = 0
     var redtag: Int = 0
     var bluetag: Int = 0
@@ -46,6 +48,8 @@ class ViewController: UIViewController {
         
         
     }
+    
+    
         func move() {
         //座標を読み込む
         print("memoryタイマーは動いてます")
@@ -129,13 +133,12 @@ class ViewController: UIViewController {
         touchView.addSubview(imageView)
         imageView.isUserInteractionEnabled = true
         // ロングプレスを定義
-        //let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(LongPressCodeViewController.longPressView(_:)))  //Swift2.2以前
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressView(sender:)))  //Swift3
         longPressGesture.minimumPressDuration = 1  //1秒間以上押された場合にロングプレスとする
         longPressGesture.allowableMovement = 30  //ロングプレスを判定する指が動いていい範囲、単位はpx
         
         touchView.addGestureRecognizer(longPressGesture)
-        
+        touchView.addGestureRecognizer(tapGesture)
         
         func animation(){
             UIView.animate(withDuration: 0.05,
@@ -166,9 +169,8 @@ class ViewController: UIViewController {
         var latesttouch: UITouch!
         var color:String = "aiueo"
         
-        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-            
-            print("色は",color)
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+                        print("色は",color)
         }
         
         
@@ -201,28 +203,19 @@ class ViewController: UIViewController {
         override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
             latesttouch = touches.first!
             print("image touched")
-            
-            
-            
-            
-            
         }
-        
-        
-        
     }
-    
-    
-    
-    /// ロングプレス時に実行される
-    
+    //タップ時に実行される
+    func tap(_ sender: UITapGestureRecognizer){
+        print("Tapped !")
+        touchView = sender.view as! ViewController.TouchView
+    }
+        /// ロングプレス時に実行される
     func longPressView(sender: UILongPressGestureRecognizer) {
         print("Long Press")
-        //self.touchView.removeFromSuperview()
         touchView = sender.view as! ViewController.TouchView
         //アラートを出す
         let alert1:UIAlertController = UIAlertController(title:"削除",message:"選択した丸を削除します。", preferredStyle: .alert)
-        
         //削除ボタン
         alert1.addAction(
             UIAlertAction(
@@ -255,20 +248,12 @@ class ViewController: UIViewController {
         )
         present(alert1, animated: true, completion: nil)
         
-        
-        
         func testSlider(sender: UISlider) {
-            
-            
         }
-         
         func store() {
-            
         }
         
     }
-    
-    
     @IBAction func saisei() {
         print("再生ボタンが押されました")
         saiseitimer = Timer.scheduledTimer(
@@ -277,10 +262,6 @@ class ViewController: UIViewController {
             selector: #selector(ViewController.anime),
             userInfo: nil,
             repeats: true   )
-       
-
-
-        
     }
     @IBAction func memory () {
         if ArrayX.count == 0, ArrayY.count == 0{
@@ -307,39 +288,24 @@ class ViewController: UIViewController {
                         NSLog("OKボタンが押されました")
                         self.touchView.frame.origin.y = self.motonoitiY[0]
                         self.touchView.frame.origin.x = self.motonoitiX[0]
-
             }
             )
             )
             present(alert2, animated: true, completion: nil)
-            
-
-            
         }
-        
-
-        
     }
-    
     //再生し終わったら再生タイマー止める
-    
-    
-    func anime() {
+        func anime() {
         if animecount < ArrayX.count {
             touchView.frame.origin.x = ArrayX[animecount]
             touchView.frame.origin.y = ArrayY[animecount]
             animecount = animecount + 1
             print("再生タイマーがスタート")
-            
         } else {
             saiseitimer.invalidate()
             print("再生タイマーストップ")
-            
         }
     }
-    
-    
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
