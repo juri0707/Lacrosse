@@ -22,10 +22,12 @@ class ViewController: UIViewController {
     var ArrayX = [CGFloat]()
     var ArrayY = [CGFloat]()
     var animecount = 0
-    let saiseitimer = Timer()
-    let memorytimer = Timer()
-    
-    
+    var saiseitimer = Timer()
+    var memorytimer = Timer()
+    var kosu = 0
+    var motonoitiX = [CGFloat]()
+    var motonoitiY = [CGFloat]()
+    let alert2:UIAlertController = UIAlertController(title:"記憶をし直します",message:"再度記憶ボタンを押して始めてください", preferredStyle: .alert)
     //選択しているスタンプの番号
     var imageIndex: Int = 0
     var redtag: Int = 0
@@ -44,18 +46,27 @@ class ViewController: UIViewController {
         
         
     }
-    @IBAction func stop() {
-    memorytimer.invalidate()
-    }
-    func move() {
+        func move() {
         //座標を読み込む
-        print("タイマー動いてます")
+        print("memoryタイマーは動いてます")
         ArrayX.append(touchView.frame.origin.x)
         print(ArrayX)
         ArrayY.append(touchView.frame.origin.y)
         print(ArrayY)
+            motonoitiX = [ArrayX[0]]
+            motonoitiY = [ArrayY[0]]
+
     }
-    
+    @IBAction func stop() {
+        if memorytimer.isValid {
+            //タイマーが動作していたら止める
+            memorytimer.invalidate()
+            print("memoryタイマーが止まりました")
+            kosu = ArrayX.count
+            print("要素の個数は",kosu)
+        }
+    }
+
     
     
     @IBAction func  selectedFirst() {
@@ -210,10 +221,10 @@ class ViewController: UIViewController {
         //self.touchView.removeFromSuperview()
         touchView = sender.view as! ViewController.TouchView
         //アラートを出す
-        let alert:UIAlertController = UIAlertController(title:"削除",message:"選択した丸を削除します。", preferredStyle: .alert)
+        let alert1:UIAlertController = UIAlertController(title:"削除",message:"選択した丸を削除します。", preferredStyle: .alert)
         
-        //OKボタン
-        alert.addAction(
+        //削除ボタン
+        alert1.addAction(
             UIAlertAction(
                 title:"OK",
                 style: UIAlertActionStyle.default,
@@ -242,8 +253,7 @@ class ViewController: UIViewController {
             }
             )
         )
-        present(alert, animated: true, completion: nil)
-        
+        present(alert1, animated: true, completion: nil)
         
         
         
@@ -251,14 +261,7 @@ class ViewController: UIViewController {
             
             
         }
-        
-        
-        
-        
-        
-        
-        
-        
+         
         func store() {
             
         }
@@ -266,44 +269,73 @@ class ViewController: UIViewController {
     }
     
     
-    
     @IBAction func saisei() {
-        let saiseitimer = Timer.scheduledTimer(
+        print("再生ボタンが押されました")
+        saiseitimer = Timer.scheduledTimer(
             timeInterval:0.1,
             target: self,
             selector: #selector(ViewController.anime),
             userInfo: nil,
             repeats: true   )
+       
+
+
         
     }
     @IBAction func memory () {
-        let memorytimer = Timer.scheduledTimer(
+        if ArrayX.count == 0, ArrayY.count == 0{
+                    memorytimer = Timer.scheduledTimer(
             timeInterval:0.1,
             target: self,
             selector: #selector(ViewController.move),
             userInfo: nil,
             repeats: true   )
+            
+        }else{
+            animecount = 0
+            ArrayX.removeAll()
+            print(ArrayX.count)
+            ArrayY.removeAll()
+            print(ArrayY.count)
+            //OKボタン
+            alert2.addAction(
+                UIAlertAction(
+                    title:"OK",
+                    style: UIAlertActionStyle.default,
+                    handler: {action in
+                        //ボタンが押された時の動作
+                        NSLog("OKボタンが押されました")
+                        self.touchView.frame.origin.y = self.motonoitiY[0]
+                        self.touchView.frame.origin.x = self.motonoitiX[0]
+
+            }
+            )
+            )
+            present(alert2, animated: true, completion: nil)
+            
+
+            
+        }
         
-        
+
         
     }
     
-    
-    
-    
-    
+    //再生し終わったら再生タイマー止める
     
     
     func anime() {
-        
-        touchView.frame.origin.x = ArrayX[animecount]
-        touchView.frame.origin.y = ArrayY[animecount]
-        animecount = animecount + 1
-        
-        
-        
-        
-        
+        if animecount < ArrayX.count {
+            touchView.frame.origin.x = ArrayX[animecount]
+            touchView.frame.origin.y = ArrayY[animecount]
+            animecount = animecount + 1
+            print("再生タイマーがスタート")
+            
+        } else {
+            saiseitimer.invalidate()
+            print("再生タイマーストップ")
+            
+        }
     }
     
     
