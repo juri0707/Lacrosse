@@ -24,17 +24,18 @@ class ViewController: UIViewController {
     var animecount = 0
     var saiseitimer = Timer()
     var memorytimer = Timer()
+    var saisei2timer = Timer()
     var kosu = 0
     var motonoitiX = [CGFloat]()
     var motonoitiY = [CGFloat]()
     let alert2:UIAlertController = UIAlertController(title:"記憶をし直します",message:"再度記憶ボタンを押して始めてください", preferredStyle: .alert)
-    var testSlider: UISlider!
-    //タップジェスチャーを定義
-    let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self,action: #selector(ViewController.tap(_:)))
+    @IBOutlet var mySlider: UISlider!
+    var mimimumS = 0
+    var maximumS = [Float]()
     var imageIndex: Int = 0
     var redtag: Int = 0
     var bluetag: Int = 0
-    
+    var Scount = 0.0
     //背景画像を表示させるImageView
     @IBOutlet var haikeiImageView: UIImageView!
     
@@ -44,9 +45,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib
-        
-        
-        
     }
     
     
@@ -68,6 +66,11 @@ class ViewController: UIViewController {
             print("memoryタイマーが止まりました")
             kosu = ArrayX.count
             print("要素の個数は",kosu)
+            mySlider.minimumValue = 0
+            mySlider.maximumValue = Float(ArrayX.count / 10)
+            print("スライダーの最大値が",mySlider.maximumValue,"になりました")
+            mySlider.value = 0
+            print(mySlider.value)
         }
     }
 
@@ -138,7 +141,11 @@ class ViewController: UIViewController {
         longPressGesture.allowableMovement = 30  //ロングプレスを判定する指が動いていい範囲、単位はpx
         
         touchView.addGestureRecognizer(longPressGesture)
+        let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self,action: #selector(ViewController.tap(_:)))
         touchView.addGestureRecognizer(tapGesture)
+        
+
+        
         
         func animation(){
             UIView.animate(withDuration: 0.05,
@@ -149,6 +156,7 @@ class ViewController: UIViewController {
                 self.imageView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             }
         }
+        
         
         
         
@@ -172,6 +180,11 @@ class ViewController: UIViewController {
         override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
                         print("色は",color)
         }
+        
+        
+        
+
+        
         
         
         override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -205,6 +218,7 @@ class ViewController: UIViewController {
             print("image touched")
         }
     }
+    
     //タップ時に実行される
     func tap(_ sender: UITapGestureRecognizer){
         print("Tapped !")
@@ -214,8 +228,10 @@ class ViewController: UIViewController {
     func longPressView(sender: UILongPressGestureRecognizer) {
         print("Long Press")
         touchView = sender.view as! ViewController.TouchView
-        //アラートを出す
+                //アラートを出す
         let alert1:UIAlertController = UIAlertController(title:"削除",message:"選択した丸を削除します。", preferredStyle: .alert)
+        
+        
         //削除ボタン
         alert1.addAction(
             UIAlertAction(
@@ -248,12 +264,17 @@ class ViewController: UIViewController {
         )
         present(alert1, animated: true, completion: nil)
         
-        func testSlider(sender: UISlider) {
-        }
+        
         func store() {
         }
         
     }
+    @IBAction func tsuika () {
+        
+        
+        
+    }
+
     @IBAction func saisei() {
         print("再生ボタンが押されました")
         saiseitimer = Timer.scheduledTimer(
@@ -262,6 +283,16 @@ class ViewController: UIViewController {
             selector: #selector(ViewController.anime),
             userInfo: nil,
             repeats: true   )
+        
+        saisei2timer = Timer.scheduledTimer(
+            timeInterval:0.1,
+            target: self,
+            selector: #selector(ViewController.slider),
+            userInfo: nil,
+            repeats: true   )
+    
+        
+        
     }
     @IBAction func memory () {
         if ArrayX.count == 0, ArrayY.count == 0{
@@ -294,6 +325,8 @@ class ViewController: UIViewController {
             present(alert2, animated: true, completion: nil)
         }
     }
+    
+
     //再生し終わったら再生タイマー止める
         func anime() {
         if animecount < ArrayX.count {
@@ -305,7 +338,25 @@ class ViewController: UIViewController {
             saiseitimer.invalidate()
             print("再生タイマーストップ")
         }
+            
+            
     }
+    //スライダーのタイマーのメソッド
+    func slider() {
+        Scount = Scount + 0.1
+        mySlider.value = Float(Int(Scount))
+        print(mySlider.value)
+        if mySlider.value == Float(mySlider.maximumValue) {
+            saisei2timer.invalidate()
+            print("再生終了")
+        }
+
+        
+        
+            }
+    
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
