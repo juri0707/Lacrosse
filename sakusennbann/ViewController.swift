@@ -9,8 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-
+    
+    
     //スタンプの画像が入った配列
     var imageNameArray: [String] = ["透明丸 2", "透明丸"]
     var touchView = TouchView(frame: CGRect(x: 0, y: 0, width: 40, height:40))
@@ -19,9 +19,12 @@ class ViewController: UIViewController {
     @IBOutlet var bluebutton: UIButton!
     @IBOutlet var LabelX: UILabel!
     @IBOutlet var LabelY: UILabel!
+    var ArrayX = [CGFloat]()
+    var ArrayY = [CGFloat]()
+    var animecount = 0
+    let saiseitimer = Timer()
+    let memorytimer = Timer()
     
-    
-
     
     //選択しているスタンプの番号
     var imageIndex: Int = 0
@@ -33,18 +36,35 @@ class ViewController: UIViewController {
     
     
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib
+        
+        
+        
     }
+    @IBAction func stop() {
+    memorytimer.invalidate()
+    }
+    func move() {
+        //座標を読み込む
+        print("タイマー動いてます")
+        ArrayX.append(touchView.frame.origin.x)
+        print(ArrayX)
+        ArrayY.append(touchView.frame.origin.y)
+        print(ArrayY)
+    }
+    
+    
+    
     @IBAction func  selectedFirst() {
         imageIndex = 1
         redtag = redtag + 1
         appearInView(imageIndex)
         print("タグの番号は",imageView.tag)
         touchView.color = "red"
-                    }
+    }
     
     
     @IBAction func  selectedSecond() {
@@ -69,28 +89,28 @@ class ViewController: UIViewController {
             let image:UIImage = UIImage(named: imageNameArray[0])!
             imageView.image = image
             
-
+            
             
             touchView.center = CGPoint(x:30,y:30)
             //７つ置いたらボタンを使用不可に
-//            redtag = redtag + 1
+            //            redtag = redtag + 1
             if redtag == 7{
                 redbutton.isEnabled = false
             }
-                        
+            
             
         }else if redOrBlue == 2 {
             imageView.tag = bluetag
             let image:UIImage = UIImage(named: imageNameArray[1])!
             imageView.image = image
             
-
+            
             touchView.center = CGPoint(x:80,y:30)
             //７つ置いたらボタンを使用不可に
-//            bluetag = bluetag + 1
+            //            bluetag = bluetag + 1
             if bluetag == 7{
                 bluebutton.isEnabled = false
-                            }
+            }
             
             
         }
@@ -108,19 +128,19 @@ class ViewController: UIViewController {
         
         func animation(){
             UIView.animate(withDuration: 0.05,
-        //アニメーション中の処理
+                           //アニメーション中の処理
                 animations: { () -> Void in
                     self.imageView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
             }){ (Bool) -> Void in
                 self.imageView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             }
         }
-
-
+        
+        
         
     }
-
-
+    
+    
     //"今からルートを記憶しますよボタン(=記憶ボタン)"を押す
     //image(丸)を選択してドラッグする
     //ドラッグした時のルート（座標）を記憶
@@ -130,13 +150,11 @@ class ViewController: UIViewController {
     
     
     
-        class TouchView: UIView{
-        var ArrayX = [Int]()
-        var ArrayY = [Int]()
+    class TouchView: UIView{
+        
         var latesttouch: UITouch!
         var color:String = "aiueo"
-            
-            
+        
         override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             
             print("色は",color)
@@ -145,11 +163,6 @@ class ViewController: UIViewController {
         
         override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
             let touch:UITouch = touches.first!
-            
-            
-            
-                        
-            
             // 移動する前の座標を取得.
             let prevLocationX = touch.previousLocation(in: self).x
             let prevLocationY = touch.previousLocation(in: self).y
@@ -157,33 +170,41 @@ class ViewController: UIViewController {
             // 移動した先の座標を取得.
             let locationX = touch.location(in: self).x
             let locationY = touch.location(in: self).y
-                
-    
+            
+            
             // ドラッグで移動したx, y距離をとる.
             let deltaX: CGFloat = locationX - prevLocationX
             let deltaY: CGFloat = locationY - prevLocationY
             
             // CGRect生成
             var myFrame: CGRect = self.frame
-                
+            
             // 移動した分の距離をmyFrameの座標にプラスする.
             myFrame.origin.x += deltaX
             myFrame.origin.y += deltaY
             // frameにmyFrameを追加.
             self.frame = myFrame
-         }
+        }
         
         // タッチイベントの検出
         override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
             latesttouch = touches.first!
             print("image touched")
             
-
+            
+            
+            
             
         }
+        
+        
+        
     }
+    
+    
+    
     /// ロングプレス時に実行される
-
+    
     func longPressView(sender: UILongPressGestureRecognizer) {
         print("Long Press")
         //self.touchView.removeFromSuperview()
@@ -202,58 +223,95 @@ class ViewController: UIViewController {
                     sender.view?.removeFromSuperview()
                     
                     if self.touchView.color == "red"{
-                    self.redtag = self.redtag - 1
-                    print("削除したので赤のタグ番号は",self.redtag)
-                    if self.redtag == 7{
-                        self.redbutton.isEnabled = false
-                    }else{
-                 self.redbutton.isEnabled = true
+                        self.redtag = self.redtag - 1
+                        print("削除したので赤のタグ番号は",self.redtag)
+                        if self.redtag == 7{
+                            self.redbutton.isEnabled = false
+                        }else{
+                            self.redbutton.isEnabled = true
                         }
                     }else{
                         self.bluetag = self.bluetag - 1
                         print("削除したので青のタグ番号は",self.bluetag)
-                    if self.bluetag == 7{
-                        self.bluebutton.isEnabled = false
-                     }else{
-                        self.bluebutton.isEnabled = true
-                    }
-                    }
+                        if self.bluetag == 7{
+                            self.bluebutton.isEnabled = false
+                        }else{
+                            self.bluebutton.isEnabled = true
                         }
-                        )
-                        )
+                    }
+            }
+            )
+        )
         present(alert, animated: true, completion: nil)
         
         
         
         
         func testSlider(sender: UISlider) {
-    
-    
-        }
-    
-    
-
-
-
-    
-    func saisei() {
-        
-    }
-
-
-    func store() {
-        
-    }
-    func memory () {
+            
             
         }
-
+        
+        
+        
+        
+        
+        
+        
+        
+        func store() {
+            
+        }
+        
+    }
     
-
-    func didReceiveMemoryWarning() {
+    
+    
+    @IBAction func saisei() {
+        let saiseitimer = Timer.scheduledTimer(
+            timeInterval:0.1,
+            target: self,
+            selector: #selector(ViewController.anime),
+            userInfo: nil,
+            repeats: true   )
+        
+    }
+    @IBAction func memory () {
+        let memorytimer = Timer.scheduledTimer(
+            timeInterval:0.1,
+            target: self,
+            selector: #selector(ViewController.move),
+            userInfo: nil,
+            repeats: true   )
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    func anime() {
+        
+        touchView.frame.origin.x = ArrayX[animecount]
+        touchView.frame.origin.y = ArrayY[animecount]
+        animecount = animecount + 1
+        
+        
+        
+        
+        
+    }
+    
+    
+    
+    override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+}
 
-}
-}
