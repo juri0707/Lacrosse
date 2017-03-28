@@ -79,13 +79,6 @@
                                     <action selector="selectedFirst" destination="BYZ-38-t0r" eventType="touchUpInside" id="HS5-0m-P1s"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxx-z8-69P">
-                                <rect key="frame" x="49" y="247" width="120" height="79"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BK-sN-Yc6">
                                 <rect key="frame" x="197" y="247" width="116" height="79"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -111,6 +104,10 @@
                                     <action selector="store" destination="BYZ-38-t0r" eventType="touchUpInside" id="tPT-bB-twF"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="DOe-00-iuz">
+                                <rect key="frame" x="31" y="328" width="253" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </slider>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kGB-Lm-wzK">
                                 <rect key="frame" x="526" y="308" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -143,15 +140,19 @@
                                     <action selector="tsuika" destination="BYZ-38-t0r" eventType="touchUpInside" id="vqX-dF-4hW"/>
                                 </connections>
                             </button>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="DOe-00-iuz">
-                                <rect key="frame" x="31" y="328" width="253" height="31"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbt-VL-S2C">
+                                <rect key="frame" x="526" y="194" width="50" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </slider>
+                                <fontDescription key="fontDescription" type="system" pointSize="46"/>
+                                <state key="normal" title="⏸"/>
+                                <connections>
+                                    <action selector="teishiandgo" destination="BYZ-38-t0r" eventType="touchUpInside" id="8aD-qM-G2B"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
-                        <outlet property="LabelX" destination="Sxx-z8-69P" id="Mz9-c9-cm8"/>
                         <outlet property="LabelY" destination="3BK-sN-Yc6" id="qGy-vx-6uQ"/>
                         <outlet property="bluebutton" destination="qKo-2b-8l9" id="3lv-di-d5Z"/>
                         <outlet property="haikeiImageView" destination="UEk-Ob-Mn7" id="bjr-PY-1xg"/>

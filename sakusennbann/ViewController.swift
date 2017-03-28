@@ -25,10 +25,12 @@ class ViewController: UIViewController {
     var saiseitimer = Timer()
     var memorytimer = Timer()
     var saisei2timer = Timer()
+    var Gotimer = Timer()
     var kosu = 0
     var motonoitiX = [CGFloat]()
     var motonoitiY = [CGFloat]()
     let alert2:UIAlertController = UIAlertController(title:"記憶をし直します",message:"再度記憶ボタンを押して始めてください", preferredStyle: .alert)
+    let alert3:UIAlertController = UIAlertController(title:"繰り返し",message:"もう一度再生ボタンを押してください", preferredStyle: .alert)
     @IBOutlet var mySlider: UISlider!
     var mimimumS = 0
     var maximumS = [Float]()
@@ -36,6 +38,9 @@ class ViewController: UIViewController {
     var redtag: Int = 0
     var bluetag: Int = 0
     var Scount = 0.0
+    var Nokori = [Float]()
+    var tomattatoko = 0
+    
     //背景画像を表示させるImageView
     @IBOutlet var haikeiImageView: UIImageView!
     
@@ -46,8 +51,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib
     }
-    
-    
         func move() {
         //座標を読み込む
         print("memoryタイマーは動いてます")
@@ -73,9 +76,41 @@ class ViewController: UIViewController {
             print(mySlider.value)
         }
     }
+    
+    @IBAction func teishiandgo() {
 
-    
-    
+        if saiseitimer.isValid {
+            saiseitimer.invalidate()
+            print("再生タイマーが一時停止")
+            print(ArrayX)
+            saisei2timer.invalidate()
+            print("スライダーが一時停止")
+            print("スライダーの最大値は",mySlider.maximumValue)
+            print("何秒たったか",Scount)
+            tomattatoko = Int(mySlider.value)
+            print("止まったとこの値は",tomattatoko)
+        }else{
+            Gotimer = Timer.scheduledTimer(
+                timeInterval:0.1,
+                target: self,
+                selector: #selector(ViewController.slider),
+                userInfo: nil,
+                repeats: true   )
+            Gotimer = Timer.scheduledTimer(
+                timeInterval:0.1,
+                target: self,
+                selector: #selector(ViewController.anime),
+                userInfo: nil,
+                repeats: true   )
+        }
+    }
+    //次押したら
+    //timer.maximum - timer.value = 残りの秒数 = var nokori
+    //5 - 2 = 3つまり残り三秒タイマーを動かす
+    //最大値は変わらず５で、現在値は2
+    //タイマーの秒数を制限 = nokori
+    //メソッドを作成　nokori
+    //noko riメソッドの何かがnokoriと同値になったら、タイマーストップ
     @IBAction func  selectedFirst() {
         imageIndex = 1
         redtag = redtag + 1
@@ -91,12 +126,8 @@ class ViewController: UIViewController {
         appearInView(imageIndex)
         print("タグの番号は",imageView.tag)
         touchView.color = "blue"
-        
     }
-    
-    
-    
-    
+   
     func appearInView(_ redOrBlue: Int){
         touchView = TouchView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -180,12 +211,7 @@ class ViewController: UIViewController {
         override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
                         print("色は",color)
         }
-        
-        
-        
-
-        
-        
+       
         
         override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
             let touch:UITouch = touches.first!
@@ -277,6 +303,11 @@ class ViewController: UIViewController {
 
     @IBAction func saisei() {
         print("再生ボタンが押されました")
+        print(mySlider.value)
+        
+        
+        if Scount == 0 {
+            print("Scountは0です")
         saiseitimer = Timer.scheduledTimer(
             timeInterval:0.1,
             target: self,
@@ -290,13 +321,15 @@ class ViewController: UIViewController {
             selector: #selector(ViewController.slider),
             userInfo: nil,
             repeats: true   )
-    
-        
-        
+        }else{
+            print("Scountは0ではありませんもう一度押して")
+            Scount = 0
+            }
+            
     }
     @IBAction func memory () {
         if ArrayX.count == 0, ArrayY.count == 0{
-                    memorytimer = Timer.scheduledTimer(
+            memorytimer = Timer.scheduledTimer(
             timeInterval:0.1,
             target: self,
             selector: #selector(ViewController.move),
@@ -340,8 +373,9 @@ class ViewController: UIViewController {
         }
             
             
+            
     }
-    //スライダーのタイマーのメソッド
+    //スライダーのタイマー(saisei2timer)のメソッド
     func slider() {
         Scount = Scount + 0.1
         mySlider.value = Float(Int(Scount))
