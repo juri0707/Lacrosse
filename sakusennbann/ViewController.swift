@@ -19,8 +19,8 @@ class ViewController: UIViewController {
     @IBOutlet var bluebutton: UIButton!
     @IBOutlet var LabelX: UILabel!
     @IBOutlet var LabelY: UILabel!
-    var ArrayX = [CGFloat]()
-    var ArrayY = [CGFloat]()
+//    var ArrayX = [CGFloat]()
+//    var ArrayY = [CGFloat]()
     var animecount = 0
     var saiseitimer = Timer()
     var memorytimer = Timer()
@@ -54,12 +54,12 @@ class ViewController: UIViewController {
         func move() {
         //座標を読み込む
         print("memoryタイマーは動いてます")
-        ArrayX.append(touchView.frame.origin.x)
-        print(ArrayX)
-        ArrayY.append(touchView.frame.origin.y)
-        print(ArrayY)
-            motonoitiX = [ArrayX[0]]
-            motonoitiY = [ArrayY[0]]
+        touchView.touchArrayX.append(touchView.frame.origin.x)
+        print(touchView.touchArrayX)
+        touchView.touchArrayY.append(touchView.frame.origin.y)
+        print(touchView.touchArrayY)
+            motonoitiX = [touchView.touchArrayX[0]]
+            motonoitiY = [touchView.touchArrayY[0]]
 
     }
     @IBAction func stop() {
@@ -67,10 +67,10 @@ class ViewController: UIViewController {
             //タイマーが動作していたら止める
             memorytimer.invalidate()
             print("memoryタイマーが止まりました")
-            kosu = ArrayX.count
+            kosu = touchView.touchArrayX.count
             print("要素の個数は",kosu)
             mySlider.minimumValue = 0
-            mySlider.maximumValue = Float(ArrayX.count / 10)
+            mySlider.maximumValue = Float(touchView.touchArrayX.count / 10)
             print("スライダーの最大値が",mySlider.maximumValue,"になりました")
             mySlider.value = 0
             print(mySlider.value)
@@ -82,7 +82,7 @@ class ViewController: UIViewController {
         if saiseitimer.isValid {
             saiseitimer.invalidate()
             print("再生タイマーが一時停止")
-            print(ArrayX)
+            print(touchView.touchArrayX)
             saisei2timer.invalidate()
             print("スライダーが一時停止")
             print("スライダーの最大値は",mySlider.maximumValue)
@@ -207,6 +207,9 @@ class ViewController: UIViewController {
         
         var latesttouch: UITouch!
         var color:String = "aiueo"
+        var touchArrayX = [CGFloat]()
+        var touchArrayY = [CGFloat]()
+        
         
         override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
                         print("色は",color)
@@ -300,7 +303,7 @@ class ViewController: UIViewController {
         
         
     }
-
+    //
     @IBAction func saisei() {
         print("再生ボタンが押されました")
         print(mySlider.value)
@@ -327,8 +330,9 @@ class ViewController: UIViewController {
             }
             
     }
+    
     @IBAction func memory () {
-        if ArrayX.count == 0, ArrayY.count == 0{
+        if touchView.touchArrayX.count == 0, touchView.touchArrayY.count == 0{
             memorytimer = Timer.scheduledTimer(
             timeInterval:0.1,
             target: self,
@@ -338,10 +342,10 @@ class ViewController: UIViewController {
             
         }else{
             animecount = 0
-            ArrayX.removeAll()
-            print(ArrayX.count)
-            ArrayY.removeAll()
-            print(ArrayY.count)
+            touchView.touchArrayX.removeAll()
+            print(touchView.touchArrayX.count)
+            touchView.touchArrayY.removeAll()
+            print(touchView.touchArrayY.count)
             //OKボタン
             alert2.addAction(
                 UIAlertAction(
@@ -360,11 +364,11 @@ class ViewController: UIViewController {
     }
     
 
-    //再生し終わったら再生タイマー止める
+    //再生する。再生し終わったら再生タイマー止める
         func anime() {
-        if animecount < ArrayX.count {
-            touchView.frame.origin.x = ArrayX[animecount]
-            touchView.frame.origin.y = ArrayY[animecount]
+        if animecount < touchView.touchArrayX.count {
+            touchView.frame.origin.x = touchView.touchArrayX[animecount]
+            touchView.frame.origin.y = touchView.touchArrayY[animecount]
             animecount = animecount + 1
             print("再生タイマーがスタート")
         } else {
