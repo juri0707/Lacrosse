@@ -40,6 +40,7 @@ class ViewController: UIViewController {
     var Scount = 0.0
     var Nokori = [Float]()
     var tomattatoko = 0
+    var moveTag: Int = 0
     
     //背景画像を表示させるImageView
     @IBOutlet var haikeiImageView: UIImageView!
@@ -54,23 +55,35 @@ class ViewController: UIViewController {
         func move() {
         //座標を読み込む
         print("memoryタイマーは動いてます")
-        touchView.touchArrayX.append(touchView.frame.origin.x)
-        print(touchView.touchArrayX)
-        touchView.touchArrayY.append(touchView.frame.origin.y)
-        print(touchView.touchArrayY)
-            motonoitiX = [touchView.touchArrayX[0]]
-            motonoitiY = [touchView.touchArrayY[0]]
+        touchView.touchArrayX1.append(touchView.frame.origin.x)
+        print("配列1は",touchView.touchArrayX1)
+        touchView.touchArrayY1.append(touchView.frame.origin.y)
+        print("配列1は",touchView.touchArrayY1)
+            motonoitiX = [touchView.touchArrayX1[0]]
+            motonoitiY = [touchView.touchArrayY1[0]]
 
     }
+    func move2() {
+        //座標を読み込む
+        print("memoryタイマーは動いてます")
+        touchView.touchArrayX2.append(touchView.frame.origin.x)
+        print("配列２は",touchView.touchArrayX2)
+        touchView.touchArrayY2.append(touchView.frame.origin.y)
+        print("配列２は",touchView.touchArrayY2)
+        motonoitiX = [touchView.touchArrayX2[0]]
+        motonoitiY = [touchView.touchArrayY2[0]]
+        
+    }
+
     @IBAction func stop() {
         if memorytimer.isValid {
             //タイマーが動作していたら止める
             memorytimer.invalidate()
             print("memoryタイマーが止まりました")
-            kosu = touchView.touchArrayX.count
+            kosu = touchView.touchArrayX1.count
             print("要素の個数は",kosu)
             mySlider.minimumValue = 0
-            mySlider.maximumValue = Float(touchView.touchArrayX.count / 10)
+            mySlider.maximumValue = Float(touchView.touchArrayX1.count / 10)
             print("スライダーの最大値が",mySlider.maximumValue,"になりました")
             mySlider.value = 0
             print(mySlider.value)
@@ -82,7 +95,7 @@ class ViewController: UIViewController {
         if saiseitimer.isValid {
             saiseitimer.invalidate()
             print("再生タイマーが一時停止")
-            print(touchView.touchArrayX)
+            print(touchView.touchArrayX1)
             saisei2timer.invalidate()
             print("スライダーが一時停止")
             print("スライダーの最大値は",mySlider.maximumValue)
@@ -99,7 +112,7 @@ class ViewController: UIViewController {
             Gotimer = Timer.scheduledTimer(
                 timeInterval:0.1,
                 target: self,
-                selector: #selector(ViewController.anime),
+                selector: #selector(ViewController.anime1),
                 userInfo: nil,
                 repeats: true   )
         }
@@ -172,10 +185,17 @@ class ViewController: UIViewController {
         longPressGesture.allowableMovement = 30  //ロングプレスを判定する指が動いていい範囲、単位はpx
         
         touchView.addGestureRecognizer(longPressGesture)
+        //タップを定義
         let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer(target: self,action: #selector(ViewController.tap(_:)))
         touchView.addGestureRecognizer(tapGesture)
+        //ダブルタップを定義
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(ViewController.doubleTapAction(_:)))
+
+        doubleTapGesture.numberOfTapsRequired = 2
+        touchView.addGestureRecognizer(doubleTapGesture)
         
 
+        
         
         
         func animation(){
@@ -207,12 +227,15 @@ class ViewController: UIViewController {
         
         var latesttouch: UITouch!
         var color:String = "aiueo"
-        var touchArrayX = [CGFloat]()
-        var touchArrayY = [CGFloat]()
-        
+        var touchArrayX1 = [CGFloat]()
+        var touchArrayY1 = [CGFloat]()
+        var touchArrayX2 = [CGFloat]()
+        var touchArrayY2 = [CGFloat]()
         
         override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
                         print("色は",color)
+            
+            
         }
        
         
@@ -248,11 +271,23 @@ class ViewController: UIViewController {
         }
     }
     
-    //タップ時に実行される
+       //タップ時に実行される
     func tap(_ sender: UITapGestureRecognizer){
-        print("Tapped !")
-        touchView = sender.view as! ViewController.TouchView
+        print("tapped!")
+        
+        
     }
+    
+    //ダブルタップ時に実行される
+    func doubleTapAction(_ sender: UITapGestureRecognizer) {
+        print("doubletapped!")
+        touchView.tag = moveTag
+        moveTag = moveTag + 1
+        print("動かそうとしているのは",moveTag)
+
+    }
+    
+
         /// ロングプレス時に実行される
     func longPressView(sender: UILongPressGestureRecognizer) {
         print("Long Press")
@@ -270,9 +305,11 @@ class ViewController: UIViewController {
                     //ボタンが押された時の動作
                     NSLog("OKボタンが押されました")
                     sender.view?.removeFromSuperview()
-                    
+                    self.moveTag = self.moveTag - 1
+                    print(self.moveTag)
                     if self.touchView.color == "red"{
                         self.redtag = self.redtag - 1
+                        
                         print("削除したので赤のタグ番号は",self.redtag)
                         if self.redtag == 7{
                             self.redbutton.isEnabled = false
@@ -298,6 +335,8 @@ class ViewController: UIViewController {
         }
         
     }
+    
+    
     @IBAction func tsuika () {
         
         
@@ -306,15 +345,16 @@ class ViewController: UIViewController {
     //
     @IBAction func saisei() {
         print("再生ボタンが押されました")
-        print(mySlider.value)
-        
-        
+        print("現在の位置は",mySlider.value)
+        animecount = 0
+        print("0から数えます")
+        if moveTag == 1 {
         if Scount == 0 {
             print("Scountは0です")
         saiseitimer = Timer.scheduledTimer(
             timeInterval:0.1,
             target: self,
-            selector: #selector(ViewController.anime),
+            selector: #selector(ViewController.anime1),
             userInfo: nil,
             repeats: true   )
         
@@ -328,24 +368,67 @@ class ViewController: UIViewController {
             print("Scountは0ではありませんもう一度押して")
             Scount = 0
             }
+        }else if moveTag == 2 {
+            if Scount == 0 {
+                print("Scountは0です")
+                saiseitimer = Timer.scheduledTimer(
+                    timeInterval:0.1,
+                    target: self,
+                    selector: #selector(ViewController.anime2),
+                    userInfo: nil,
+                    repeats: true   )
+                
+                saisei2timer = Timer.scheduledTimer(
+                    timeInterval:0.1,
+                    target: self,
+                    selector: #selector(getter: ViewController.mySlider),
+                    userInfo: nil,
+                    repeats: true   )
+            }else{
+                print("Scountは0ではありませんもう一度押して")
+                Scount = 0
+            }
+
             
-    }
+        
+    }else if moveTag == 3 {
     
+    
+        }else if moveTag == 4 {
+    
+            
+        }else if moveTag == 5 {
+    
+
+        }else if moveTag == 6 {
+    
+
+        }else if moveTag == 7 {
+    
+
+        }else if moveTag == 8 {
+    
+    }
+
+
+    }
+
     @IBAction func memory () {
-        if touchView.touchArrayX.count == 0, touchView.touchArrayY.count == 0{
+        if self.moveTag == 1 {
+        
+        if touchView.touchArrayX1.count == 0, touchView.touchArrayY1.count == 0{
             memorytimer = Timer.scheduledTimer(
             timeInterval:0.1,
             target: self,
             selector: #selector(ViewController.move),
             userInfo: nil,
             repeats: true   )
-            
         }else{
             animecount = 0
-            touchView.touchArrayX.removeAll()
-            print(touchView.touchArrayX.count)
-            touchView.touchArrayY.removeAll()
-            print(touchView.touchArrayY.count)
+            touchView.touchArrayX1.removeAll()
+            print(touchView.touchArrayX1.count)
+            touchView.touchArrayY1.removeAll()
+            print(touchView.touchArrayY1.count)
             //OKボタン
             alert2.addAction(
                 UIAlertAction(
@@ -361,14 +444,44 @@ class ViewController: UIViewController {
             )
             present(alert2, animated: true, completion: nil)
         }
+        }else if self.moveTag == 2 {
+            if touchView.touchArrayX2.count == 0, touchView.touchArrayY2.count == 0{
+                memorytimer = Timer.scheduledTimer(
+                    timeInterval:0.1,
+                    target: self,
+                    selector: #selector(ViewController.move2),
+                    userInfo: nil,
+                    repeats: true   )
+            }else{
+                animecount = 0
+                touchView.touchArrayX2.removeAll()
+                print(touchView.touchArrayX2.count)
+                touchView.touchArrayY2.removeAll()
+                print(touchView.touchArrayY2.count)
+                //OKボタン
+                alert2.addAction(
+                    UIAlertAction(
+                        title:"OK",
+                        style: UIAlertActionStyle.default,
+                        handler: {action in
+                            //ボタンが押された時の動作
+                            NSLog("OKボタンが押されました")
+                            self.touchView.frame.origin.y = self.motonoitiY[0]
+                            self.touchView.frame.origin.x = self.motonoitiX[0]
+                    }
+                    )
+                )
+                present(alert2, animated: true, completion: nil)
+            }
+
+        }
     }
-    
 
     //再生する。再生し終わったら再生タイマー止める
-        func anime() {
-        if animecount < touchView.touchArrayX.count {
-            touchView.frame.origin.x = touchView.touchArrayX[animecount]
-            touchView.frame.origin.y = touchView.touchArrayY[animecount]
+        func anime1() {
+        if animecount < touchView.touchArrayX1.count {
+            touchView.frame.origin.x = touchView.touchArrayX1[animecount]
+            touchView.frame.origin.y = touchView.touchArrayY1[animecount]
             animecount = animecount + 1
             print("再生タイマーがスタート")
         } else {
@@ -378,6 +491,18 @@ class ViewController: UIViewController {
             
             
             
+    }
+    func anime2() {
+        
+        if animecount < touchView.touchArrayX2.count {
+            touchView.frame.origin.x = touchView.touchArrayX2[animecount]
+            touchView.frame.origin.y = touchView.touchArrayY2[animecount]
+            animecount = animecount + 1
+            print("再生タイマーがスタート")
+        } else {
+            saiseitimer.invalidate()
+            print("再生タイマーストップ")
+        }
     }
     //スライダーのタイマー(saisei2timer)のメソッド
     func slider() {
