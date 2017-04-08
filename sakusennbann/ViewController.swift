@@ -76,6 +76,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func stop() {
+        if moveTag == 1 {
         if memorytimer.isValid {
             //タイマーが動作していたら止める
             memorytimer.invalidate()
@@ -87,6 +88,22 @@ class ViewController: UIViewController {
             print("スライダーの最大値が",mySlider.maximumValue,"になりました")
             mySlider.value = 0
             print(mySlider.value)
+        }
+            
+        }else if moveTag == 2 {
+            if memorytimer.isValid {
+                //タイマーが動作していたら止める
+                memorytimer.invalidate()
+                print("memoryタイマーが止まりました")
+                kosu = touchView.touchArrayX2.count
+                print("要素の個数は",kosu)
+                mySlider.minimumValue = 0
+                mySlider.maximumValue = Float(touchView.touchArrayX2.count / 10)
+                print("スライダーの最大値が",mySlider.maximumValue,"になりました")
+                mySlider.value = 0
+                print(mySlider.value)
+            }
+ 
         }
     }
     
