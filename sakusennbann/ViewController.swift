@@ -45,7 +45,7 @@ class ViewController: UIViewController {
     var bluetag: Int = 0
     var Scount = 0.0
     var Nokori = [Float]()
-    var tomattatoko = 0
+    var tomattatoko = 0.0
     var moveTag: Int = 0
     
     //背景画像を表示させるImageView
@@ -85,6 +85,8 @@ class ViewController: UIViewController {
         
         print("配列１Xは",touchView.touchArrayX1)
         print("配列１Yは",touchView.touchArrayY1)
+        print("配列2Xは",touchView.touchArrayX2)
+        print("配列2Yは",touchView.touchArrayY2)
         if moveTag == 1 {
         if memorytimer.isValid {
             //タイマーが動作していたら止める
@@ -126,7 +128,7 @@ class ViewController: UIViewController {
             print("スライダーが一時停止")
             print("スライダーの最大値は",mySlider.maximumValue)
             print("何秒たったか",Scount)
-            tomattatoko = Int(mySlider.value)
+            tomattatoko = Double(Int(mySlider.value))
             print("止まったとこの値は",tomattatoko)
         }else{
             Gotimer = Timer.scheduledTimer(
@@ -299,6 +301,7 @@ class ViewController: UIViewController {
     
        //タップ時に実行される
     func tap(_ sender: UITapGestureRecognizer){
+        touchView = sender.view as! ViewController.TouchView
         print("tapped!")
         
         
@@ -306,6 +309,7 @@ class ViewController: UIViewController {
     
     //ダブルタップ時に実行される
     func doubleTapAction(_ sender: UITapGestureRecognizer) {
+        touchView = sender.view as! ViewController.TouchView
         print("doubletapped!")
         touchView.tag = moveTag
         moveTag = moveTag + 1
@@ -368,6 +372,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func GO () {
+        Scount = 0
         print("GOボタンが押されました")
         print("配列１Xは",touchView.touchArrayX1)
         print("配列１Yは",touchView.touchArrayY1)
@@ -387,6 +392,7 @@ class ViewController: UIViewController {
 
         
         if mySlider.value == Float(tomattatoko) {
+            print("スライダーの値が一時停止ポイントと一致しました")
             print("配列2は",touchView.touchArrayX2,touchView.touchArrayY2)
 
         saiseitimer2 = Timer.scheduledTimer(
